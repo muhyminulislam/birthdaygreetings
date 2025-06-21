@@ -1,0 +1,213 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8" />
+  <title>Joyeux Anniversaire</title>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      background: linear-gradient(135deg, #2e004f, #5e0b7e);
+      font-family: 'Segoe UI', sans-serif;
+      color: white;
+      height: 100vh;
+      overflow: hidden;
+      position: relative;
+    }
+
+    .floating {
+      position: absolute;
+      font-size: 20px;
+      opacity: 0.8;
+      animation: float 10s infinite linear;
+      pointer-events: none;
+    }
+
+    @keyframes float {
+      0% {
+        transform: translateY(100vh) rotate(0deg);
+        opacity: 0.3;
+      }
+      100% {
+        transform: translateY(-10vh) rotate(360deg);
+        opacity: 0;
+      }
+    }
+
+    .top-fixed {
+      position: absolute;
+      top: 40px;
+      left: 50%;
+      transform: translateX(-50%);
+      text-align: center;
+      z-index: 2;
+    }
+
+    .cake {
+      width: 160px;
+      animation: floatCake 3s ease-in-out infinite;
+      margin-bottom: 10px;
+    }
+
+    @keyframes floatCake {
+      0%, 100% { transform: translateY(0); }
+      50% { transform: translateY(-10px); }
+    }
+
+    .birthday-title {
+      font-size: 2.2rem;
+      font-weight: bold;
+      text-shadow: 2px 2px 10px #000;
+    }
+
+    .message-box {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -10%);
+      width: 80%;
+      max-width: 800px;
+      background: rgba(255, 255, 255, 0.07);
+      padding: 20px;
+      border-radius: 20px;
+      backdrop-filter: blur(8px);
+      font-size: 1.5rem;
+      text-align: center;
+      line-height: 1.6;
+      transition: opacity 0.5s ease-in-out;
+      opacity: 0;
+    }
+
+    .fade-in {
+      opacity: 1;
+    }
+
+    .click-tip {
+      position: absolute;
+      bottom: 20px;
+      left: 50%;
+      transform: translateX(-50%);
+      font-size: 0.9rem;
+      color: #ccc;
+      opacity: 0.6;
+      user-select: none;
+    }
+
+    /* Music button */
+    #music-btn {
+      position: fixed;
+      top: 20px;
+      right: 20px;
+      background: rgba(255, 255, 255, 0.3);
+      border: none;
+      border-radius: 50%;
+      width: 50px;
+      height: 50px;
+      cursor: pointer;
+      font-size: 24px;
+      color: #2e004f;
+      backdrop-filter: blur(5px);
+      z-index: 999;
+      user-select: none;
+    }
+
+    #music-btn:focus {
+      outline: none;
+      box-shadow: 0 0 5px #fff;
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Floating emoji confetti -->
+  <script>
+    const emojis = ['🎈', '✨', '🎉', '⭐', '💜', '🎊'];
+    for (let i = 0; i < 40; i++) {
+      const el = document.createElement('div');
+      el.className = 'floating';
+      el.style.left = Math.random() * 100 + 'vw';
+      el.style.top = Math.random() * 100 + 'vh';
+      el.style.fontSize = (Math.random() * 24 + 12) + 'px';
+      el.style.animationDuration = (Math.random() * 8 + 4) + 's';
+      el.innerHTML = emojis[Math.floor(Math.random() * emojis.length)];
+      document.body.appendChild(el);
+    }
+  </script>
+
+  <!-- Fixed top cake and title -->
+  <div class="top-fixed">
+    <img src="cake.png" alt="Birthday Cake" class="cake" />
+    <div class="birthday-title">🎂 Happy Birthday 🎂</div>
+  </div>
+
+  <!-- Message area -->
+  <div id="message" class="message-box"></div>
+  <div class="click-tip">Click anywhere to see the next message</div>
+
+  <!-- Audio player -->
+  <audio id="bg-music" loop>
+    <source src="bd" type="mp3" />
+    Your browser does not support the audio element.
+  </audio>
+
+  <button id="music-btn" title="Play/Pause Music">🎵</button>
+
+  <!-- Message and music logic -->
+  <script>
+    const messages = [
+      "Mi amor de peruanita,",
+      "Aujourd'hui, tu atteins un âge particulier, un âge symbolique, un tournant.",
+      "Le nombre 40, que tu as longtemps redouté, devient l’occasion de célébrer ta vie de mille manières.",
+      "Nous allons te célébrer de 40 manières différentes au cours de cette année : 40 endroits, 40 moments, 40 visages.",
+      "Chaque moment, chaque lieu, chaque visage qui croisera ton chemin est un hommage à la merveilleuse personne que tu es.",
+      "Ce nombre 40, qui t’a fait douter, pleurer, et parfois t’interroger, doit désormais devenir l’un de tes nombres préférés.",
+      "Car c’est l’âge de la sagesse, de la confiance, et de l’épanouissement, et tu n’as jamais été aussi radieuse.",
+      "À travers ces 40 moments, nous voulons te rappeler tout ce que tu as accompli et tout ce qui t’attend encore.",
+      "Ces 40 moments sont pour toi, pour célébrer chaque étape de ta vie, chaque pas que tu as fait.",
+      "Tu es une source d’inspiration pour nous tous, et chaque jour à tes côtés est une bénédiction.",
+      "Nous sommes nombreux à t’aimer, et cette mission est la nôtre : transformer ce chiffre que tu redoutais en un symbole de joie et d’accomplissement.",
+      "Nous allons te montrer, à travers ces 40 moments, combien tu es aimée, respectée, et admirée.",
+      "Chaque instant sera une célébration de ta beauté, de ta force et de ton amour incommensurable.",
+      "Tu as traversé tant de choses, mais à 40 ans, tu es plus forte et plus épanouie que jamais.",
+      "Tu es un trésor, et chaque moment passé avec toi est un cadeau que je chéris profondément."
+    ];
+
+    let index = 0;
+    const messageEl = document.getElementById("message");
+    const music = document.getElementById("bg-music");
+    const musicBtn = document.getElementById("music-btn");
+
+    function showMessage() {
+      messageEl.classList.remove("fade-in");
+      setTimeout(() => {
+        messageEl.textContent = messages[index];
+        messageEl.classList.add("fade-in");
+        index = (index + 1) % messages.length;
+      }, 300);
+    }
+
+    document.body.addEventListener("click", showMessage);
+
+    musicBtn.addEventListener("click", (e) => {
+      e.stopPropagation(); // Prevent triggering message change
+      if (music.paused) {
+        music.play();
+        musicBtn.textContent = '⏸️';
+      } else {
+        music.pause();
+        musicBtn.textContent = '🎵';
+      }
+    });
+
+    // Show first message
+    showMessage();
+  </script>
+
+</body>
+</html>
+
+
